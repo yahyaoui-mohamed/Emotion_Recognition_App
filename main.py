@@ -1,14 +1,13 @@
-import tkinter as tk
-from PIL import Image, ImageTk
-import cv2
 import threading
+import tkinter as tk
+import cv2
+import numpy as np
+import math
+from keras.models import load_model
 from playsound import playsound
 from tkinter import ttk
-from keras.models import load_model
-from keras.preprocessing.image import img_to_array
-import numpy as np
+from PIL import Image, ImageTk
 
-model = load_model('./emotion_recognition_model.h5')
 
 class CameraApp:
     def __init__(self, window, video_source=0, width=640, height=480):
@@ -32,10 +31,9 @@ class CameraApp:
         self.window.mainloop()
 
     def preprocess_face(self, face):
-        face = cv2.resize(face, (48, 48))  # Resize to the input size of your model
-        # face = cv2.cvtColor(face, cv2.COLOR_RGB2GRAY)  # Convert to grayscale if required
-        face = face / 255.0  # Normalize
-        face = np.expand_dims(face, axis=0)  # Add batch dimension
+        face = cv2.resize(face, (48, 48))
+        face = face / 255.0
+        face = np.expand_dims(face, axis=0)
         return face
 
     def update(self):
@@ -51,7 +49,15 @@ class CameraApp:
                 predictions = self.model.predict(processed_face)
                 emotion = self.class_names[np.argmax(predictions)]
                 score = np.max(predictions)
-
+                progressbar1['value'] = math.ceil(predictions[0][0] * 100)
+                progressbar2['value'] = math.ceil(predictions[0][1] * 100)
+                progressbar3['value'] = math.ceil(predictions[0][2] * 100)
+                progressbar4['value'] = math.ceil(predictions[0][3] * 100)
+                progressbar5['value'] = math.ceil(predictions[0][4] * 100)
+                progressbar6['value'] = math.ceil(predictions[0][5] * 100)
+                progressbar7['value'] = math.ceil(predictions[0][6] * 100)
+                root.update()
+                root.after(50)
                 cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
                 cv2.putText(frame, f'{emotion}: {score:.2f}', (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 0, 0), 2)
 
@@ -65,8 +71,8 @@ class CameraApp:
 
 def play_audio():
     def play_both():
-        playsound('hello.mp3')
-        playsound('function.mp3')
+        # playsound('hello.mp3')
+        # playsound('function.mp3')
         start_camera()
 
     threading.Thread(target=play_both).start()
@@ -84,17 +90,44 @@ screen_height = root.winfo_screenheight()
 
 root.geometry(f"{screen_width}x{screen_height}")
 
+label1 = tk.Label(root, text="Angry",bg="black",fg="white")
+label1.place(x=30, y=70)
 progressbar1 = ttk.Progressbar(mode="determinate")
-progressbar1.place(x=30, y=60, width=200)
+progressbar1.place(x=30, y=100, width=200)
 
+
+label2 = tk.Label(root, text="Disgust",bg="black",fg="white")
+label2.place(x=30, y=170)
 progressbar2 = ttk.Progressbar(mode="determinate")
-progressbar2.place(x=30, y=90, width=200)
+progressbar2.place(x=30, y=200, width=200)
 
+label2 = tk.Label(root, text="Fear",bg="black",fg="white")
+label2.place(x=30, y=270)
 progressbar3 = ttk.Progressbar(mode="determinate")
-progressbar3.place(x=30, y=120, width=200)
+progressbar3.place(x=30, y=300, width=200)
 
+label2 = tk.Label(root, text="Happy",bg="black",fg="white")
+label2.place(x=30, y=370)
 progressbar4 = ttk.Progressbar(mode="determinate")
-progressbar4.place(x=30, y=150, width=200)
+progressbar4.place(x=30, y=400, width=200)
+
+
+label2 = tk.Label(root, text="Neutral",bg="black",fg="white")
+label2.place(x=30, y=470)
+progressbar5 = ttk.Progressbar(mode="determinate")
+progressbar5.place(x=30, y=500, width=200)
+
+
+label2 = tk.Label(root, text="Sad",bg="black",fg="white")
+label2.place(x=30, y=570)
+progressbar6 = ttk.Progressbar(mode="determinate")
+progressbar6.place(x=30, y=600, width=200)
+
+
+label2 = tk.Label(root, text="Surprise",bg="black",fg="white")
+label2.place(x=30, y=670)
+progressbar7 = ttk.Progressbar(mode="determinate")
+progressbar7.place(x=30, y=700, width=200)
 
 play_audio()
 
