@@ -49,6 +49,15 @@ class CameraApp:
                 predictions = self.model.predict(processed_face)
                 emotion = self.class_names[np.argmax(predictions)]
                 score = np.max(predictions)
+                emotion_label = self.class_names[np.argmax(predictions)]
+
+                img_path = "./avatars/"+emotion_label+".jpg"
+                new_image = Image.open(img_path)
+                new_image = new_image.resize((150, 150))
+                new_photo = ImageTk.PhotoImage(new_image)
+                img_label.configure(image=new_photo)
+                img_label.image = new_photo
+                # root.after(100, self.change_emotion) 
                 progressbar1['value'] = math.ceil(predictions[0][0] * 100)
                 progressbar2['value'] = math.ceil(predictions[0][1] * 100)
                 progressbar3['value'] = math.ceil(predictions[0][2] * 100)
@@ -56,6 +65,7 @@ class CameraApp:
                 progressbar5['value'] = math.ceil(predictions[0][4] * 100)
                 progressbar6['value'] = math.ceil(predictions[0][5] * 100)
                 progressbar7['value'] = math.ceil(predictions[0][6] * 100)
+
                 root.update()
                 root.after(50)
                 cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
@@ -128,6 +138,13 @@ label2 = tk.Label(root, text="Surprise",bg="black",fg="white")
 label2.place(x=30, y=670)
 progressbar7 = ttk.Progressbar(mode="determinate")
 progressbar7.place(x=30, y=700, width=200)
+
+img = Image.open("./avatars/neutral.jpg")
+img = img.resize((150, 150))
+photo = ImageTk.PhotoImage(img)
+img_label = tk.Label(root, image=photo)
+img_label.image = photo 
+img_label.place(x=250, y=60)
 
 play_audio()
 
