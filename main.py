@@ -139,7 +139,7 @@ label2.place(x=30, y=670)
 progressbar7 = ttk.Progressbar(mode="determinate")
 progressbar7.place(x=30, y=700, width=200)
 
-img = Image.open("./avatars/neutral.jpg")
+img = Image.open("./avatars/Neutral.png")
 img = img.resize((150, 150))
 photo = ImageTk.PhotoImage(img)
 img_label = tk.Label(root, image=photo)
