@@ -51,7 +51,7 @@ class CameraApp:
                 score = np.max(predictions)
                 emotion_label = self.class_names[np.argmax(predictions)]
 
-                img_path = "./avatars/"+emotion_label+".jpg"
+                img_path = "./avatars/"+emotion_label+".png"
                 new_image = Image.open(img_path)
                 new_image = new_image.resize((150, 150))
                 new_photo = ImageTk.PhotoImage(new_image)
