@@ -53,7 +53,7 @@ class CameraApp:
 
                 img_path = "./avatars/"+emotion_label+".png"
                 new_image = Image.open(img_path)
-                new_image = new_image.resize((150, 150))
+                new_image = new_image.resize((250, 250))
                 new_photo = ImageTk.PhotoImage(new_image)
                 img_label.configure(image=new_photo)
                 img_label.image = new_photo
@@ -69,7 +69,6 @@ class CameraApp:
                 root.update()
                 root.after(50)
                 cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-                cv2.putText(frame, f'{emotion}: {score:.2f}', (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 0, 0), 2)
 
             self.photo = ImageTk.PhotoImage(image=Image.fromarray(frame))
             self.canvas.create_image(0, 0, image=self.photo, anchor=tk.NW)
@@ -88,10 +87,10 @@ def play_audio():
     threading.Thread(target=play_both).start()
 
 def start_camera():
-    camera_app = CameraApp(root)
+    CameraApp(root)
 
 root = tk.Tk()
-root.title("Tkinter Test")
+root.title("Emotion Recognition")
 
 root.configure(bg="black")
 
@@ -140,7 +139,7 @@ progressbar7 = ttk.Progressbar(mode="determinate")
 progressbar7.place(x=30, y=700, width=200)
 
 img = Image.open("./avatars/Neutral.png")
-img = img.resize((150, 150))
+img = img.resize((250, 250))
 photo = ImageTk.PhotoImage(img)
 img_label = tk.Label(root, image=photo)
 img_label.image = photo 
