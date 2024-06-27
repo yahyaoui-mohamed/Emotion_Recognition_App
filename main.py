@@ -69,7 +69,7 @@ class CameraApp:
                 root.update()
                 root.after(50)
                 cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
-
+                cv2.putText(frame, f'{emotion}: {math.ceil(score*100)}%', (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 0, 0), 2)
             self.photo = ImageTk.PhotoImage(image=Image.fromarray(frame))
             self.canvas.create_image(0, 0, image=self.photo, anchor=tk.NW)
         self.window.after(10, self.update)
